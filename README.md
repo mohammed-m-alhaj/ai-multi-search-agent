@@ -87,12 +87,6 @@ cd ai-multi-search-agent
 touch .env
 ```
 
-Add your API keys inside:
-
-```bash
-OPENAI_API_KEY=
-```
-
 ### 3️⃣ Install Dependencies
 
 ```bash
