@@ -1,158 +1,133 @@
-# 🌐 AI Multi Search Agent 🤖
+# AI Multi-Search Agent 🌐🤖
 
-An **advanced multi-source AI search assistant** powered by **LangChain**, **LangGraph**, and **Streamlit**.  
-It intelligently searches across the web, aggregates data, and summarizes insights — all in one beautiful interface. 🚀
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/LangGraph-Multi--Agent-blueviolet?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/LangChain-Orchestration-1C3C3C?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Streamlit-UI-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
+</p>
 
----
-
-## 🧠 Project Overview
-
-**AI Multi Search Agent** is an AI-driven web search system that connects multiple data sources using the power of **LangChain** and **LangGraph**.  
-It allows users to:
-
-- 🔍 Search multiple sources (Google, Wikipedia, etc.)
-- 🧩 Build intelligent reasoning graphs
-- 💬 Interact with a friendly Streamlit chat interface
-- ⚙️ Use environment variables from `.env` for API keys and configuration
+**AI Multi-Search Agent** is a multi-source intelligent retrieval and synthesis engine designed to coordinate heterogeneous web sources (DuckDuckGo, Wikipedia, Search APIs), evaluate content relevance, and synthesize multi-perspective summaries using **LangGraph** orchestration and **LangChain**.
 
 ---
 
-## 🏗️ Project Structure
-
-```
-
-ai-multi-search-agent/
-│
-├── .env                       # Environment variables (API keys, secrets)
-├── README.md                  # Documentation (this file)
-├── pyproject.toml             # Project metadata and dependencies
-│
-├──streamlit.py                #GUL
-├── main.py                    # 🧠 Streamlit web app entry point
-├── prompts.py                 # 💬 Predefined prompts and templates
-├── snapshot_operations.py     # ⚙️ Defines custom AI agents and workflows
-├── web_operations.py          # 🌐 Web search + LangGraph node definitions
-└── assets/                    # 🖼️ Images, diagrams, or icons used in the app
-
-```
-
----
-
-## ⚙️ Technologies Used
-
-| Library                   | Purpose                                           |
-| ------------------------- | ------------------------------------------------- |
-| **LangChain**             | Building LLM-based chains and pipelines           |
-| **LangGraph**             | Defining multi-step AI workflows and state graphs |
-| **Streamlit**             | Frontend web interface for user interaction       |
-| **python-dotenv**         | Loading environment variables from `.env`         |
-| **OpenAI API / Web APIs** | Data generation and search retrieval              |
-
----
-
-## 🧩 How It Works (Flow Diagram)
+## 🏗️ Retrieval & Synthesis Architecture
 
 ```mermaid
 flowchart TD
-    A[User Query 💬] --> B[LangChain Agent 🤖]
-    B --> C[LangGraph Workflow ⚙️]
-    C --> D[Web Search Nodes 🌍]
-    D --> E[Results Aggregation 🗂️]
-    E --> F[Response Generation ✨]
-    F --> G[Streamlit UI 🖥️]
+    User([User Search Query]) --> QueryDecomp[Query Decomposition & Routing]
+    QueryDecomp --> Source1[Web Search Node: DuckDuckGo / Tavily]
+    QueryDecomp --> Source2[Encyclopedia Node: Wikipedia]
+    QueryDecomp --> Source3[Domain Knowledge Retrieval]
+    Source1 --> Aggregator[Multi-Source Aggregator & Deduplication]
+    Source2 --> Aggregator
+    Source3 --> Aggregator
+    Aggregator --> Evaluator{Relevance & Cross-Validation Filter}
+    Evaluator --> Synthesizer[LLM Synthesis & Citation Engine]
+    Synthesizer --> StreamlitUI([Interactive Streamlit Dashboard])
 ```
-
-**Explanation:**
-
-1. The user sends a query through the Streamlit interface.
-2. LangChain processes and forwards it into the LangGraph workflow.
-3. The graph orchestrates calls to different web search nodes.
-4. Results are aggregated, analyzed, and summarized using AI.
-5. The final response is displayed beautifully in the Streamlit UI.
 
 ---
 
-## 🧪 Quick Start Guide
+## 🚀 Key Features
 
-### 1️⃣ Clone the Repository
+- **Multi-Source Aggregation**: Asynchronously dispatches queries across heterogeneous search endpoints, merging disparate results into a unified context window.
+- **Agentic Orchestration (LangGraph)**: Multi-step reasoning pipeline evaluating information consistency and resolving cross-source contradictions.
+- **Context-Aware Query Expansion**: Breaks complex exploratory questions into targeted sub-queries for broader semantic coverage.
+- **Interactive UI**: Real-time Streamlit workspace with live progress indicators and citation traces.
+
+---
+
+## 🛠️ Project Structure
+
+```
+ai-multi-search-agent/
+│
+├── main.py                    # Streamlit frontend entry point & user workspace
+├── snapshot_operations.py     # Custom LangGraph state nodes and workflow compiler
+├── web_operations.py          # Search API connectors, parsers, and node definitions
+├── prompts.py                 # Structured system prompts and synthesis templates
+├── pyproject.toml             # Package metadata and environment specifications
+├── requirements.txt           # Pinned production dependencies
+├── .env.example               # Environment variables configuration template
+└── README.md                  # Comprehensive project documentation
+```
+
+---
+
+## 📦 Quick Start Guide
+
+### 1. Clone Repository
 
 ```bash
-git clone https://github.com/mohammed-alhaj-7ds/ai-multi-search-agent.git
+git clone https://github.com/mohammed-m-alhaj/ai-multi-search-agent.git
 cd ai-multi-search-agent
 ```
 
-### 2️⃣ Create `.env` File
+### 2. Environment Setup
 
 ```bash
-touch .env
-```
+# Create virtual environment
+python -m venv venv
 
-### 3️⃣ Install Dependencies
+# Activate virtual environment
+# Windows (PowerShell):
+venv\Scripts\activate
+# Linux / macOS:
+source venv/bin/activate
 
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-or if using **pyproject.toml**:
+### 3. API Configuration
+
+Create a `.env` file from the template:
 
 ```bash
-pip install .
+# Windows:
+Copy-Item .env.example .env
+# Linux / macOS:
+cp .env.example .env
 ```
 
-### 4️⃣ Run the Streamlit App
+Set your API keys inside `.env`:
+```ini
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+### 4. Run Application
 
 ```bash
 streamlit run main.py
 ```
+Open your browser at `http://localhost:8501`.
 
 ---
 
-## 💡 Example Usage
+## 💡 Example Scenario
 
-When you run the app:
+```text
+💬 Input Query:
+   "Analyze the architectural trade-offs between dense vs. sparse vector indexes in RAG pipelines"
 
-1. Enter a query (e.g., _“Compare AI models GPT-4 vs Claude 3”_)
-2. The system runs a multi-source search across the web
-3. LangGraph orchestrates agents to summarize and merge results
-4. The response appears in an elegant Streamlit UI
+⚙️ Orchestrated Retrieval:
+   ├── Query Node A: [Vector Indexing Benchmarks 2026]
+   ├── Query Node B: [HNSW vs IVF vs BM25 Hybrid Search trade-offs]
+   └── Query Node C: [Memory overhead & recall trade-offs]
 
----
-
-## 🧰 Example Streamlit Code (main.py)
-
-```python
-import streamlit as st
-from snapshot_operations import run_agent
-
-st.set_page_config(page_title="AI Multi Search Agent", page_icon="🤖")
-
-st.title("🌐 AI Multi Search Agent")
-query = st.text_input("🔍 Enter your search query:")
-
-if st.button("Search"):
-    with st.spinner("Processing your query..."):
-        result = run_agent(query)
-        st.write("### 🧠 AI Summary")
-        st.write(result)
+📊 Synthesized Response:
+   Comprehensive comparison table detailing recall rates, query latency, index build times, and hybrid RRF (Reciprocal Rank Fusion) best practices with full source attribution.
 ```
 
 ---
 
-## 🧩 Future Improvements
+## 👨‍💻 Author & Attribution
 
-- 🔗 Add more data sources (YouTube, Arxiv, Twitter)
-- 🧠 Integrate local document search (RAG)
-- 🎨 Enhance UI/UX with Streamlit components
-- 🗃️ Store past searches in SQLite
+Developed by **[Mohammed AL-Haj](https://github.com/mohammed-m-alhaj)**  
+AI Engineer specializing in LLMs, Multi-Agent Systems, and Computer Vision.
 
----
-
-## 👨‍💻 Author
-
-**Mohammed Alhaj**
-📧 `malborwa@gmail.com`
-🔗 GitHub: [mohammed-alhaj-7ds](https://github.com/mohammed-alhaj-7ds)
-
----
-
-⭐ _If you like this project, give it a star on GitHub!_
+- 📧 Email: `ai.mohammed.alhaj@gmail.com`
+- 💼 LinkedIn: [mohammed-al-haj](https://linkedin.com/in/mohammed-mohammed-al-haj-341ab7369)
+- 🐙 GitHub: [@mohammed-m-alhaj](https://github.com/mohammed-m-alhaj)
